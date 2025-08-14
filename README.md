@@ -1,41 +1,92 @@
-Face Recognition-Based Attendance System Overview This project is an innovative Face Recognition-Based Attendance System designed to streamline attendance management for educational institutions. Developed using Python and OpenCV, the system automates attendance tracking through facial recognition, ensuring accuracy, efficiency, and reliability. The project was awarded First Prize in a Project-Based Learning (PBL) competition during my first year of engineering.
+# Face-Recognition-Based Attendance System
 
-Features Automated Attendance Recording: Recognizes faces in real-time and marks attendance. User-Friendly Interface: Built with Tkinter for easy operation. Data Storage and Reporting: Stores attendance records in Excel for seamless management and reporting. Absentee Notifications: Integrated with Twilio API to send SMS alerts to absentees. Portable and Flexible: Operates on devices powered by portable power banks, making it highly deployable. Technology Stack Programming Language: Python Libraries: OpenCV: For face detection and recognition NumPy: For numerical computations Tkinter: For the GUI interface Twilio: For SMS integration Tools: Microsoft Excel How It Works Face Registration:
+This system automates attendance tracking using real-time face detection and recognition. By capturing and recognizing faces from a camera feed, it accurately logs attendance with timestamps and exports the data for easy reporting and analysis. This project is ideal for use in classrooms, labs, and small offices.
 
-Capture and register students' faces into the database. Real-Time Recognition:
+## Features
 
-The system detects faces using OpenCV and matches them with the registered database. Attendance Marking:
+  * **Real-time Attendance:** Automatically detects and recognizes faces from a live camera feed.
+  * **Simple Workflow:** Follows a straightforward three-step process: **Enrollment** → **Training** → **Attendance**.
+  * **Scalable Design:** Handles multiple faces in a single frame, making it suitable for group settings.
+  * **Flexible Data Export:** Logs attendance with timestamps directly to **CSV** or **Excel** files.
+  * **Modular Architecture:** The system's design is highly maintainable and easy to extend.
 
-Matches found faces with the database and records their attendance in an Excel sheet. Absentee Notifications:
+## Architecture
 
-Sends SMS alerts to absentees via the Twilio API. Portability:
+The system follows a conventional, three-stage pipeline for face recognition.
 
-Can be deployed on portable devices with a power bank for maximum flexibility. Installation Prerequisites Python 3.x Libraries: OpenCV NumPy Twilio Tkinter Setup Instructions Clone the repository:
+1.  **Enrollment:** Images of each person are captured from a webcam and saved to the `TrainingImages/` directory. For best results, capture 30–100 images per person from different angles and lighting conditions.
+2.  **Training:** The system processes the captured images to compute face encodings (embeddings) and saves them as a serialized model (e.g., a `.pkl` or `.npz` file) in the `models/` folder. This model is used for recognition.
+3.  **Recognition:** During an attendance session, the system detects faces in each frame, computes their encodings, and compares them to the trained model using a distance threshold. It logs each person's attendance once per session to prevent duplicate entries.
 
-bash Copy code git clone (https://github.com/onkar38/Face-Recognition-Based-Attendance-System/tree/main)
-cd face-recognition-attendance
-Install dependencies:
+The final attendance logs are stored in the `attendance/` directory, typically with a new file created per day or session (e.g., `YYYY-MM-DD_subject.csv`).
 
-bash Copy code pip install -r requirements.txt
-Configure Twilio:
+## Tech Stack
 
-Set up a Twilio account. Add your account SID, Auth Token, and phone number in the configuration file. Run the application:
+  * **Language:** Python 3.9+
+  * **Core Libraries:** OpenCV for camera access, `dlib` or `face-recognition` for face processing, `NumPy`, and `pandas` for data handling.
+  * **UI:** Optional front-ends can be built with **Tkinter** for a desktop application or **Flask** for a web interface.
+  * **Data Storage:** **CSV** or **Excel** for logs; **SQLite** can be used for more advanced session management.
 
-bash Copy code python main.py
-Project Structure graphql Copy code face-recognition-attendance/
-│
-├── database/ # Stores registered face data
-├── attendance/ # Stores Excel attendance records
-├── main.py # Main application script
-├── gui.py # GUI interface code
-├── requirements.txt # Required libraries
-└── README.md # Project documentation
-Acknowledgment This project was guided by Mr. Makrand Kulkarni and developed during my first year of engineering.
+-----
 
-License This project is licensed under the MIT License. Feel free to use, modify, and distribute the code for your projects.
+## Getting Started
 
-Contributing Contributions are welcome! If you have suggestions or improvements, feel free to fork the repository and create a pull request.
+### Prerequisites
 
-Contact If you have questions or want to collaborate on future projects, feel free to reach out:
+  * Python 3.9 or higher
+  * `pip` package installer
+  * A working webcam or video input
+  * **For dlib:** CMake and build tools are required on Windows/macOS.
 
-Email: [onkarphopase026@gmail.com] LinkedIn: [https://www.linkedin.com/in/onkar-phopase-62324b259]
+### Installation
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/onkar38/Face-Recognition-Based-Attendance-System
+    cd Face-Recognition-Based-Attendance-System
+    ```
+2.  **Create a virtual environment (recommended):**
+    ```bash
+    python -m venv .venv
+    # On Windows:
+    .venv\Scripts\activate
+    # On macOS/Linux:
+    source .venv/bin/activate
+    ```
+3.  **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+4.  **Create necessary folders:**
+    ```
+    TrainingImages/
+    models/
+    attendance/
+    ```
+
+### Usage
+
+1.  **Enroll Users:** Run the enrollment script to capture images for each person. Enter their name/ID, and the system will capture and save 30–100 images.
+2.  **Train the Model:** Run the training script to process the images and generate the face encoding model.
+3.  **Take Attendance:** Run the attendance script. The system will start recognizing faces and automatically log entries to a CSV file.
+
+## Configuration & Tips for Accuracy
+
+  * **Tuning the Threshold:** Adjust the Euclidean distance threshold (typically between 0.5 and 0.6) to balance between precision (correctly identifying a person) and recall (identifying all people).
+  * **High-Quality Images:** Capture a large number of diverse images per person, including different angles, facial expressions, and lighting conditions.
+  * **Optimal Environment:** Ensure a well-lit environment and a stable camera position at face level to prevent motion blur and poor-quality images.
+
+## Roadmap & Extensions
+
+  * **Advanced Features:** Implement an admin login, role-based access, and class/subject management.
+  * **Notifications:** Integrate with services like **Twilio** or **SendGrid** to send SMS or email alerts on attendance events.
+  * **Dashboards:** Create analytics dashboards using tools like **Power BI** or **Streamlit** to visualize attendance trends.
+  * **Improved Security:** Add liveness detection to prevent spoofing with photos or videos.
+
+## Contributing
+
+We welcome contributions\! Please open an issue to report bugs or suggest features, and submit pull requests with clear commit messages and updated documentation.
+
+## License
+
+This project is licensed under the **MIT License**.
